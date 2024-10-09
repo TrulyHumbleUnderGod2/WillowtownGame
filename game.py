@@ -3,7 +3,7 @@ import pygame
 
 pygame.init()
 
-screen = pygame.display.set_mode((640,320))
+screen = pygame.display.set_mode((0,0))
 
 clock = pygame.time.Clock()
 
@@ -15,3 +15,4 @@ while True:
 
     pygame.display.update()
     clock.tick(60)
+

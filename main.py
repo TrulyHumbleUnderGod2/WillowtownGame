@@ -50,45 +50,6 @@ def get_block(size):
     surface.blit(image, (0, 0), rect)
     return pygame.transform.scale2x(surface)
 
-class Bee(pygame.sprite.Sprite):
-    COLOR = (255, 0, 0)
-    GRAVITY = 1
-    ANIMATION_DELAY = 3
-    SPRITES = load_sprite_sheets("Enemies", "Bee", 32, 32, True)
-
-    def __init__(self, x, y, width, height):
-        super().__init__()
-        self.rect = pygame.Rect(x, y, width, height)
-        self.x_vel = 0
-        self.y_vel = 0
-        self.mask = None
-        self.direction = "left"
-        self.animation_count = 0
-        self.fall_count = 0
-        self.jump_count = 0
-        self.hit = False
-        self.hit_count = 0
-
-    def update_sprite(self):
-        sprite_sheet = "idle"
-        if self.hit:
-            sprite_sheet = "hit"
-
-        sprite_sheet_name = sprite_sheet + "_" + self.direction
-        sprites = self.SPRITES[sprite_sheet_name]
-        sprite_index = (self.animation_count // self.ANIMATION_DELAY) % len(sprites)
-        self.sprite = sprites[sprite_index]
-        self.animation_count += 1
-        self.update()
-
-    def update(self):
-        self.rect = self.sprite.get_rect(topleft=(self.rect.x, self.rect.y))
-        self.mask = pygame.mask.from_surface(self.sprite)
-
-
-    def draw(self, win, offset_x):
-        win.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))
-
 class Player(pygame.sprite.Sprite):
     COLOR = (255, 0, 0)
     GRAVITY = 1
@@ -310,7 +271,6 @@ def main(window):
     block_size = 96
 
     player = Player(100, 100, 50, 50)
-    bee = Bee(100, 100, 50 ,50)
     fire = Fire(100, HEIGHT - block_size - 64, 16, 32)
     fire.on()
     floor = [Block(i * block_size, HEIGHT - block_size, block_size)

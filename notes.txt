@@ -1,5 +1,0 @@
-#Time = 56:14
-
-# Enemies
-
-# Bee, Mushroom, Replace Scorpion with Snail and Snake with Chameleon

@@ -266,21 +266,108 @@ def handle_move(player, objects):
 
 def main(window):
     clock = pygame.time.Clock()
-    background, bg_image = get_background("Pink.png")
+    background, bg_image = get_background("Purple.png")
 
     block_size = 96
 
     player = Player(100, 100, 50, 50)
-    fire = Fire(100, HEIGHT - block_size - 64, 16, 32)
+    fire = Fire(400, 510 - block_size - 64, 16, 32)
     fire.on()
     floor = [Block(i * block_size, HEIGHT - block_size, block_size)
-             for i in range(-WIDTH // block_size, (WIDTH * 1) // block_size)]
-    objects = [*floor, Block(0, HEIGHT - block_size * 2, block_size), Block(block_size * 3, HEIGHT - block_size * 4, block_size),  Block(block_size * 4, HEIGHT - block_size * 4, block_size), Block(block_size * 7, HEIGHT - block_size * 6, block_size), Block(block_size * 8, HEIGHT - block_size * 6, block_size), fire]
+             for i in range(-WIDTH // block_size, (WIDTH * -1) // block_size)]
+    objects = [*floor, Block(0, HEIGHT - block_size * 0, block_size), 
+    Block(block_size * 1, HEIGHT - block_size * 6, block_size),  
+    Block(block_size * 2, HEIGHT - block_size * 6, block_size), 
+    Block(block_size * 4, HEIGHT - block_size * 3.5, block_size), 
+    Block(block_size * 5, HEIGHT - block_size * 3.5, block_size),
+    Block(block_size * 8, HEIGHT - block_size * 5, block_size),
+    Block(block_size * 9, HEIGHT - block_size * 5, block_size),
+    Block(block_size * 11, HEIGHT - block_size * 7, block_size),
+    Block(block_size * 12, HEIGHT - block_size * 7, block_size),
+    Block(block_size * 14, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 15, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 18, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 19, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 22, HEIGHT - block_size * 5, block_size),
+    Block(block_size * 23, HEIGHT - block_size * 5, block_size),
+    Block(block_size * 27, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 28, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 32, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 33, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 36, HEIGHT - block_size * 6, block_size),
+    Block(block_size * 37, HEIGHT - block_size * 6, block_size),
+    Block(block_size * 40, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 43, HEIGHT - block_size * 5, block_size),
+    Block(block_size * 46, HEIGHT - block_size * 7, block_size),
+    Block(block_size * 50, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 53, HEIGHT - block_size * 6, block_size),
+    Block(block_size * 56, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 59, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 62, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 65, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 68, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 71, HEIGHT - block_size * 6, block_size),
+    Block(block_size * 74, HEIGHT - block_size * 8, block_size),
+    Block(block_size * 77, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 80, HEIGHT - block_size * 5, block_size),
+    Block(block_size * 83, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 86, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 89, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 92, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 95, HEIGHT - block_size * 5, block_size),
+    Block(block_size * 98, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 101, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 104, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 107, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 110, HEIGHT - block_size * 6, block_size),
+    Block(block_size * 113, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 116, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 119, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 122, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 125, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 128, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 131, HEIGHT - block_size * 6, block_size),
+    Block(block_size * 134, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 137, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 140, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 143, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 146, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 149, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 152, HEIGHT - block_size * 5, block_size),
+    Block(block_size * 155, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 158, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 161, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 164, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 167, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 170, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 173, HEIGHT - block_size * 3, block_size),
+    Block(block_size * 176, HEIGHT - block_size * 2, block_size),
+    Block(block_size * 179, HEIGHT - block_size * 4, block_size),
+    Block(block_size * 182, HEIGHT - block_size * 6, block_size),
+    Block(block_size * 185, HEIGHT - block_size * 8, block_size),
+    Block(block_size * 187, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 188, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 189, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 190, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 191, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 192, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 193, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 194, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 195, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 196, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 197, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 198, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 199, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 200, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 201, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 202, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 203, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 204, HEIGHT - block_size * 1, block_size),
+    Block(block_size * 205, HEIGHT - block_size * 1, block_size),
+    fire]
     
     offset_x = 0
     scroll_area_width = 200
-    offset_y = 0
-    scroll_area_height = 200
 
     run = True
     while run:
@@ -302,8 +389,6 @@ def main(window):
 
         if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or ((player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0):
             offset_x += player.x_vel 
-        if ((player.rect.top - offset_y >= HEIGHT - scroll_area_height) and player.y_vel > 0) or ((player.rect.bottom - offset_y <= scroll_area_height) and player.y_vel < 0):
-            offset_y += player.y_vel 
 
     pygame.quit
     quit()

@@ -1,6 +1,7 @@
 import os
 import random
 import math
+from turtle import Screen
 import pygame
 from os import listdir
 from os.path import isfile, join
@@ -266,7 +267,7 @@ def handle_move(player, objects):
 
 def main(window):
     clock = pygame.time.Clock()
-    background, bg_image = get_background("Purple.png")
+    background, bg_image = get_background("sky.png")
 
     block_size = 96
 

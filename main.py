@@ -194,7 +194,7 @@ class Fire(Object):
         self.mask = pygame.mask.from_surface(self.image)
 
         if self.animation_count // self.ANIMATION_DELAY > len(sprites):
-            self.animation_count = 0 
+            self.animation_count = 0
 
 def get_background(name):
     image = pygame.image.load(join("assets", "Background", name))

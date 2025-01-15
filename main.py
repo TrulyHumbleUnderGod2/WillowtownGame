@@ -395,13 +395,13 @@ boss_sprite = pygame.image.load("boss_sprite.png").convert_alpha()
 fireball_sprite = pygame.image.load("fireball_sprite.png").convert_alpha()
 
 # Constants for Boss
-BOSS_WIDTH = 64
-BOSS_HEIGHT = 64
+BOSS_WIDTH = 92
+BOSS_HEIGHT = 92
 BOSS_SHOOT_INTERVAL = 2000  # Milliseconds
 
 # Constants for Fireball
-FIREBALL_WIDTH = 32
-FIREBALL_HEIGHT = 32
+FIREBALL_WIDTH = 92
+FIREBALL_HEIGHT = 92
 FIREBALL_SPEED = 5
 
 

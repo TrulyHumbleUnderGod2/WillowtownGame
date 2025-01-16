@@ -391,8 +391,8 @@ def main(window):
         if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or ((player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0):
             offset_x += player.x_vel 
 # Load the sprites
-boss_sprite = pygame.image.load("boss_sprite.png").convert_alpha()
-fireball_sprite = pygame.image.load("fireball_sprite.png").convert_alpha()
+boss_sprite = pygame.image.load(join("assests", "boss_sprite.png")).convert_alpha()
+fireball_sprite = pygame.image.load(join("assests", "fireball_sprite.png")).convert_alpha()
 
 # Constants for Boss
 BOSS_WIDTH = 92
@@ -405,6 +405,7 @@ FIREBALL_HEIGHT = 92
 FIREBALL_SPEED = 5
 
 
+# Integrate Boss and Fireball into the main game loop
 class Boss(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -417,15 +418,20 @@ class Boss(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.shoot_timer = pygame.time.get_ticks()
+        self.animation_timer = pygame.time.get_ticks()
 
     def update(self):
-        # Animate boss (simple example)
         current_time = pygame.time.get_ticks()
+
+        # Animate boss
+        if current_time - self.animation_timer > 300:  # Change frame every 300ms
+            self.image = self.images[(self.images.index(self.image) + 1) % len(self.images)]
+            self.animation_timer = current_time
+
+        # Check if boss should shoot
         if current_time - self.shoot_timer > BOSS_SHOOT_INTERVAL:
             self.shoot_timer = current_time
-            self.image = self.images[1]  # Switch to shooting frame
-            return True  # Signal to shoot a fireball
-        self.image = self.images[0]  # Idle frame
+            return True  # Signal to shoot fireball
         return False
 
 
@@ -442,46 +448,65 @@ class Fireball(pygame.sprite.Sprite):
             self.kill()
 
 
-# Initialize sprite groups
-all_sprites = pygame.sprite.Group()
-fireballs = pygame.sprite.Group()
+def main(window):
+    clock = pygame.time.Clock()
+    background, bg_image = get_background("sky.png")
+    block_size = 96
 
-# Create the boss
-boss = Boss(SCREEN_WIDTH - BOSS_WIDTH, SCREEN_HEIGHT // 2)
-all_sprites.add(boss)
+    player = Player(100, 100, 50, 50)
+    floor = [Block(i * block_size, HEIGHT - block_size, block_size) for i in range(-WIDTH // block_size, WIDTH // block_size)]
+    objects = floor
+    offset_x = 0
+    scroll_area_width = 200
 
-# Main game loop
-clock = pygame.time.Clock()
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    # Boss and Fireballs
+    all_sprites = pygame.sprite.Group()
+    fireballs = pygame.sprite.Group()
+    boss = Boss(WIDTH - BOSS_WIDTH, HEIGHT // 2)
+    all_sprites.add(boss)
 
-    # Update boss and check if it shoots
-    if boss.update():
-        fireball = Fireball(boss.rect.left - FIREBALL_WIDTH, boss.rect.centery - FIREBALL_HEIGHT // 2)
-        fireballs.add(fireball)
-        all_sprites.add(fireball)
+    run = True
+    while run:
+        clock.tick(FPS)
 
-    # Update all sprites
-    all_sprites.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
 
-    # Clear screen
-    screen.fill(BLACK)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and player.jump_count < 2:
+                    player.jump()
 
-    # Draw all sprites
-    all_sprites.draw(screen)
+        # Update player and objects
+        player.loop(FPS)
+        handle_move(player, objects)
+        handle_vertical_collision(player, objects, player.y_vel)
 
-    # Update display
-    pygame.display.flip()
+        # Update boss and fireballs
+        if boss.update():
+            fireball = Fireball(boss.rect.left - FIREBALL_WIDTH, boss.rect.centery - FIREBALL_HEIGHT // 2)
+            fireballs.add(fireball)
+            all_sprites.add(fireball)
 
-    # Cap the frame rate
-    clock.tick(60)
-    pygame.quit
+        fireballs.update()
+        all_sprites.update()
+
+        # Check fireball collisions with player
+        for fireball in fireballs:
+            if pygame.sprite.collide_mask(player, fireball):
+                player.make_hit()
+
+        # Draw everything
+        draw(window, background, bg_image, player, objects, offset_x)
+        all_sprites.draw(window)
+
+        # Scroll screen
+        if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or ((player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0):
+            offset_x += player.x_vel
+
+    pygame.quit()
     quit()
 
 
 if __name__ == "__main__":
     main(window)
-

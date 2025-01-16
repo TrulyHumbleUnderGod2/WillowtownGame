@@ -391,8 +391,8 @@ def main(window):
         if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or ((player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0):
             offset_x += player.x_vel 
 # Load the sprites
-boss_sprite = pygame.image.load("boss_sprite.png").convert_alpha()
-fireball_sprite = pygame.image.load("fireball_sprite.png").convert_alpha()
+boss_sprite = pygame.image.load(join("assests", "boss_sprite.png")).convert_alpha()
+fireball_sprite = pygame.image.load(join("assests", "fireball_sprite.png")).convert_alpha()
 
 # Constants for Boss
 BOSS_WIDTH = 92
@@ -468,7 +468,7 @@ while running:
     all_sprites.update()
 
     # Clear screen
-    screen.fill(BLACK)
+    screen.fill(BG_COLOR)
 
     # Draw all sprites
     all_sprites.draw(screen)
@@ -478,6 +478,7 @@ while running:
 
     # Cap the frame rate
     clock.tick(60)
+    
     pygame.quit
     quit()
 

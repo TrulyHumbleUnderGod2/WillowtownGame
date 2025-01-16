@@ -390,7 +390,94 @@ def main(window):
 
         if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or ((player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0):
             offset_x += player.x_vel 
+# Load the sprites
+boss_sprite = pygame.image.load("boss_sprite.png").convert_alpha()
+fireball_sprite = pygame.image.load("fireball_sprite.png").convert_alpha()
 
+# Constants for Boss
+BOSS_WIDTH = 92
+BOSS_HEIGHT = 92
+BOSS_SHOOT_INTERVAL = 2000  # Milliseconds
+
+# Constants for Fireball
+FIREBALL_WIDTH = 92
+FIREBALL_HEIGHT = 92
+FIREBALL_SPEED = 5
+
+
+class Boss(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.images = [
+            boss_sprite.subsurface((0, 0, BOSS_WIDTH, BOSS_HEIGHT)),
+            boss_sprite.subsurface((0, BOSS_HEIGHT, BOSS_WIDTH, BOSS_HEIGHT)),
+            boss_sprite.subsurface((0, BOSS_HEIGHT * 2, BOSS_WIDTH, BOSS_HEIGHT)),
+        ]
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.shoot_timer = pygame.time.get_ticks()
+
+    def update(self):
+        # Animate boss (simple example)
+        current_time = pygame.time.get_ticks()
+        if current_time - self.shoot_timer > BOSS_SHOOT_INTERVAL:
+            self.shoot_timer = current_time
+            self.image = self.images[1]  # Switch to shooting frame
+            return True  # Signal to shoot a fireball
+        self.image = self.images[0]  # Idle frame
+        return False
+
+
+class Fireball(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = fireball_sprite
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+    def update(self):
+        self.rect.x -= FIREBALL_SPEED
+        if self.rect.right < 0:
+            self.kill()
+
+
+# Initialize sprite groups
+all_sprites = pygame.sprite.Group()
+fireballs = pygame.sprite.Group()
+
+# Create the boss
+boss = Boss(SCREEN_WIDTH - BOSS_WIDTH, SCREEN_HEIGHT // 2)
+all_sprites.add(boss)
+
+# Main game loop
+clock = pygame.time.Clock()
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Update boss and check if it shoots
+    if boss.update():
+        fireball = Fireball(boss.rect.left - FIREBALL_WIDTH, boss.rect.centery - FIREBALL_HEIGHT // 2)
+        fireballs.add(fireball)
+        all_sprites.add(fireball)
+
+    # Update all sprites
+    all_sprites.update()
+
+    # Clear screen
+    screen.fill(BLACK)
+
+    # Draw all sprites
+    all_sprites.draw(screen)
+
+    # Update display
+    pygame.display.flip()
+
+    # Cap the frame rate
+    clock.tick(60)
     pygame.quit
     quit()
 

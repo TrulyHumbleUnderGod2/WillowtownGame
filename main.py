@@ -417,15 +417,20 @@ class Boss(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.shoot_timer = pygame.time.get_ticks()
+        self.animation_timer = pygame.time.get_ticks()
 
     def update(self):
-        # Animate boss (simple example)
         current_time = pygame.time.get_ticks()
+
+        # Animate boss
+        if current_time - self.animation_timer > 300:  # Change frame every 300ms
+            self.image = self.images[(self.images.index(self.image) + 1) % len(self.images)]
+            self.animation_timer = current_time
+
+        # Check if boss should shoot
         if current_time - self.shoot_timer > BOSS_SHOOT_INTERVAL:
             self.shoot_timer = current_time
-            self.image = self.images[1]  # Switch to shooting frame
-            return True  # Signal to shoot a fireball
-        self.image = self.images[0]  # Idle frame
+            return True  # Signal to shoot fireball
         return False
 
 
